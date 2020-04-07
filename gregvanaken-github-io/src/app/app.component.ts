@@ -7,6 +7,6 @@ import { steelBlue } from './colors';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Development Portfolio';
+  title = '   Hi, I\'m Greg!   ';
   toolbarColor = Number(steelBlue);
 }
