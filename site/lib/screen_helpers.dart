@@ -10,9 +10,9 @@ double getScreenScale(BuildContext context) {
 
   // Define your scaling logic based on the screen width
   if (screenWidth <= 600) {
-    return 0.6;
-  } else if (screenWidth <= 800) {
     return 0.7;
+  } else if (screenWidth <= 1000) {
+    return 0.8;
   }
 
   return 1.0;

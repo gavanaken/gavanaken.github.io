@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:site/clickable_tile.dart';
 import 'package:site/floating_container.dart';
 import 'package:site/tile_content.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'screen_helpers.dart';
 
@@ -50,8 +52,8 @@ class MyApp extends StatelessWidget {
               fontSize: 36,
               color: TextColors.darkgrey,
               fontWeight: FontWeight.bold),
-          displayMedium: TextStyle(fontSize: 24, color: TextColors.darkgrey),
-          displaySmall: TextStyle(fontSize: 20, color: TextColors.darkgrey),
+          displayMedium: TextStyle(fontSize: 32, color: TextColors.darkgrey),
+          displaySmall: TextStyle(fontSize: 24, color: TextColors.darkgrey),
           bodySmall: TextStyle(fontSize: 18, color: TextColors.darkgrey),
           labelMedium: TextStyle(
               fontSize: 24,
@@ -85,6 +87,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? selectedTile;
 
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _targetKey = GlobalKey();
+
+// For managing interactions with tile content
+  void _scrollToTarget() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_targetKey.currentContext != null) {
+        final RenderBox renderBox =
+            _targetKey.currentContext!.findRenderObject() as RenderBox;
+        final position = renderBox.localToGlobal(Offset.zero);
+        final offset = position.dy - (MediaQuery.of(context).size.height / 2);
+
+        _scrollController.animateTo(
+          offset,
+          duration: const Duration(seconds: 1),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
   void selectTile(String tileName) {
     if (selectedTile == tileName) {
       // If the same tile is tapped again, collapse the detail view.
@@ -94,25 +117,71 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       setState(() {
         selectedTile = tileName;
+        _scrollToTarget();
       });
     }
+  }
+
+  Future<void> _launchURL(String url) async {
+    await launchUrl(Uri.parse(url));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
             FloatingContainer(
               edgeMargin: getScreenScale(context) * 0.1,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    const Row(), // Temporary, just allows the column to stretch.
-                    Column(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding:
+                        const EdgeInsets.fromLTRB(100.0, 24.0, 100.0, 48.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/gva-logo.svg",
+                          height: 80 * getScreenScale(context),
+                          width: 80 * getScreenScale(context),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          iconSize: 36 * getScreenScale(context),
+                          icon: const Icon(
+                              FontAwesomeIcons.linkedin), // LinkedIn icon
+                          hoverColor: AccentColors.peach,
+                          onPressed: () => _launchURL(
+                              'https://www.linkedin.com/in/greg-van-aken/'),
+                          tooltip: 'https://www.linkedin.com/in/greg-van-aken/',
+                        ),
+                        IconButton(
+                          iconSize: 36 * getScreenScale(context),
+                          icon: const Icon(
+                              FontAwesomeIcons.github), // GitHub icon
+                          hoverColor: AccentColors.peach,
+                          onPressed: () =>
+                              _launchURL('https://github.com/gavanaken'),
+                          tooltip: 'https://github.com/gavanaken',
+                        ),
+                        IconButton(
+                          iconSize: 36 * getScreenScale(context),
+                          icon: const Icon(Icons.email), // Email icon
+                          hoverColor: AccentColors.peach,
+                          onPressed: () =>
+                              _launchURL('mailto:gvanaken1@babson.edu'),
+                          tooltip: 'mailto:gvanaken1@babson.edu',
+                        ),
+                      ],
+                    ),
+                  ), // Temporary, just allows the column to stretch.
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -123,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(
-                          height: getScreenScale(context) * 24,
+                          height: getScreenScale(context) * 12,
                         ),
                         Text(
                           "I'm building innovative solutions to the world's hardest problems.",
@@ -133,18 +202,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: getScreenScale(context) * 48,
-                    ),
-                    SvgPicture.asset(
-                      "assets/about-me-avatar.svg",
-                      height: 250 * getScreenScale(context),
-                      width: 250 * getScreenScale(context),
-                    ),
-                    SizedBox(
-                      height: getScreenScale(context) * 48,
-                    ),
-                    RichText(
+                  ),
+                  SizedBox(
+                    height: getScreenScale(context) * 24,
+                  ),
+                  SvgPicture.asset(
+                    "assets/about-me-avatar.svg",
+                    height: 250 * getScreenScale(context),
+                    width: 250 * getScreenScale(context),
+                  ),
+                  SizedBox(
+                    height: getScreenScale(context) * 24,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         style: getScaledTextStyle(
@@ -163,13 +236,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                    RichText(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RichText(
+                      textAlign: TextAlign.center,
                       text: TextSpan(
                         style: getScaledTextStyle(
                             context, Theme.of(context).textTheme.displaySmall),
                         children: const [
                           TextSpan(
-                            text: "Currently hanging out in  ",
+                            text: "Currently hanging out in ",
                           ),
                           TextSpan(
                               text: "Boston, MA ",
@@ -180,78 +257,142 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: getScreenScale(context) * 48,
+                  ),
+                  SizedBox(
+                    height: getScreenScale(context) * 48,
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: BackgroundColors.blue,
                     ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: BackgroundColors.blue,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        getScreenScale(context) * 48,
+                        getScreenScale(context) * 24,
+                        getScreenScale(context) * 48,
+                        getScreenScale(context) * 24,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          getScreenScale(context) * 64,
-                          getScreenScale(context) * 24,
-                          getScreenScale(context) * 64,
-                          getScreenScale(context) * 24,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Row(), // TODO: remove this hack, this just fills the container
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "The TL;DR",
-                                style: getScaledTextStyle(
-                                  context,
-                                  Theme.of(context).textTheme.titleMedium,
-                                )?.copyWith(
-                                  color: TextColors.white,
-                                ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Row(), // TODO: remove this hack, this just fills the container
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "The TL;DR",
+                              style: getScaledTextStyle(
+                                context,
+                                Theme.of(context).textTheme.titleMedium,
+                              )?.copyWith(
+                                color: TextColors.white,
                               ),
                             ),
-                            Flex(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                direction: getScreenWidth(context) > 600
-                                    ? Axis.horizontal
-                                    : Axis.vertical,
-                                children: [
-                                  ClickableTile(
-                                    svgPath: "assets/tech-icon.svg",
-                                    name: "TECH",
-                                    onTapCb: selectTile,
-                                  )
-                                ]),
-                            AnimatedCrossFade(
-                              duration: const Duration(milliseconds: 300),
-                              firstChild: Container(),
-                              secondChild: selectedTile != null
-                                  ? Container(
-                                      margin: EdgeInsets.only(
-                                          right: getScreenScale(context) * 100,
-                                          left: getScreenScale(context) * 100),
-                                      child: Card(
-                                          color: BackgroundColors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                6.0), // Adjust radius size here to make it smaller or larger
-                                          ),
-                                          child: SelectedTileContent(
-                                            selectedTile: selectedTile,
-                                          )),
-                                    )
-                                  : Container(),
-                              crossFadeState: selectedTile != null
-                                  ? CrossFadeState.showSecond
-                                  : CrossFadeState.showFirst,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: getScreenWidth(context) / 4,
+                                bottom: getScreenScale(context) * 24),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical:
+                                      10), // Optional: adds vertical spacing
+                              height: getScreenScale(context) *
+                                  8, // Thickness of the line
+                              width: double
+                                  .infinity, // Full width - adjust as needed
+                              decoration: BoxDecoration(
+                                color: AccentColors.peach, // Color of the line
+                                borderRadius:
+                                    BorderRadius.circular(10), // Rounded edges
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Text(
+                            "I pride myself on my diverse skillset and interests. Click a box below to learn more.",
+                            style: getScaledTextStyle(
+                              context,
+                              Theme.of(context).textTheme.bodySmall,
+                            )?.copyWith(
+                              color: TextColors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            height: getScreenScale(context) * 24,
+                          ),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClickableTile(
+                                      svgPath: "assets/tech-icon.svg",
+                                      name: "BUSINESS",
+                                      onTapCb: selectTile,
+                                    ),
+                                    ClickableTile(
+                                      svgPath: "assets/tech-icon.svg",
+                                      name: "TECH",
+                                      onTapCb: selectTile,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClickableTile(
+                                      svgPath: "assets/tech-icon.svg",
+                                      name: "SCIENCE",
+                                      onTapCb: selectTile,
+                                    ),
+                                    ClickableTile(
+                                      svgPath: "assets/tech-icon.svg",
+                                      name: "LIFE",
+                                      onTapCb: selectTile,
+                                    ),
+                                  ],
+                                )
+                              ]),
+                          AnimatedCrossFade(
+                            duration: const Duration(milliseconds: 300),
+                            firstChild: Container(),
+                            secondChild: selectedTile != null
+                                ? SizedBox(
+                                    width: 1000 * getScreenScale(context),
+                                    child: Card(
+                                        key: _targetKey,
+                                        color: BackgroundColors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              6.0), // Adjust radius size here to make it smaller or larger
+                                        ),
+                                        child: SelectedTileContent(
+                                          selectedTile: selectedTile,
+                                        )),
+                                  )
+                                : Container(),
+                            crossFadeState: selectedTile != null
+                                ? CrossFadeState.showSecond
+                                : CrossFadeState.showFirst,
+                          ),
+                        ],
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(24.0),
+                    child: const Text(
+                        "This site is still a work in-progress... more to come soon!"),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(24.0),
+              child: Text(
+                "© ${DateTime.now().year} Greg Van Aken ",
               ),
             ),
           ],

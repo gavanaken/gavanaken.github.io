@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
+import 'screen_helpers.dart';
 
 class FloatingContainer extends StatelessWidget {
   final double edgeMargin;
@@ -7,16 +8,19 @@ class FloatingContainer extends StatelessWidget {
 
   const FloatingContainer({
     super.key,
-    this.edgeMargin = 0.1,
+    this.edgeMargin = 0.05,
     this.child,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * edgeMargin,
-      ),
+      margin: (getScreenWidth(context) > 500)
+          ? EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width *
+                  edgeMargin *
+                  getScreenScale(context))
+          : const EdgeInsets.symmetric(),
       decoration: BoxDecoration(
         color: BackgroundColors.white, // The background color of the container
         boxShadow: [
