@@ -277,6 +277,31 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Row(), // TODO: remove this hack, this just fills the container
+                          Text(
+                            "Hi, I'm Greg, thanks for stopping by!\n",
+                            style: getScaledTextStyle(
+                              context,
+                              Theme.of(context).textTheme.displayMedium,
+                            )?.copyWith(
+                              color: TextColors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                                right: getScreenWidth(context) / 8,
+                                left: getScreenWidth(context) / 8),
+                            child: Text(
+                              "I am a life-long learner and I have spent my personal and professional career exploring a wide range of disciplines. I really like building cool things that make a difference. This website should give you an idea of my experience and the kinds of things I'm currently working on. Enjoy!\n\n",
+                              style: getScaledTextStyle(
+                                context,
+                                Theme.of(context).textTheme.displaySmall,
+                              )?.copyWith(
+                                color: TextColors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                           Align(
                             alignment: Alignment.topLeft,
                             child: Text(
@@ -309,13 +334,25 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           Text(
-                            "I pride myself on my diverse skillset and interests. Click a box below to learn more.",
+                            "I pride myself on my diverse skillset and interests.",
                             style: getScaledTextStyle(
                               context,
                               Theme.of(context).textTheme.bodySmall,
                             )?.copyWith(
                               color: TextColors.white,
                             ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "Click on a box below to learn more.",
+                            style: getScaledTextStyle(
+                              context,
+                              Theme.of(context).textTheme.bodySmall,
+                            )?.copyWith(
+                              color: TextColors.white,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(
                             height: getScreenScale(context) * 24,
@@ -349,7 +386,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     ClickableTile(
                                       svgPath: "assets/tech-icon.svg",
-                                      name: "LIFE",
+                                      name: "MISC.",
                                       onTapCb: selectTile,
                                     ),
                                   ],
@@ -360,7 +397,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             firstChild: Container(),
                             secondChild: selectedTile != null
                                 ? SizedBox(
-                                    width: 1000 * getScreenScale(context),
+                                    width: getScreenWidth(context) / 2,
                                     child: Card(
                                         key: _targetKey,
                                         color: BackgroundColors.white,
@@ -384,7 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                     margin: const EdgeInsets.all(24.0),
                     child: const Text(
-                        "This site is still a work in-progress... more to come soon!"),
+                        "This site is still a work-in-progress... more to come soon!"),
                   ),
                 ],
               ),
