@@ -18,7 +18,7 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter test
-      - run: flutter build web --base-href=/gavanaken.github.io/site
+      - run: flutter build web --base-href=/gavanaken.github.io/site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: "build/web/"
