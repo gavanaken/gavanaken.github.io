@@ -292,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 right: getScreenWidth(context) / 8,
                                 left: getScreenWidth(context) / 8),
                             child: Text(
-                              "I am a life-long learner and I have spent my personal and professional career exploring a wide range of disciplines. I really like building cool things that make a difference. This website should give you an idea of my experience and the kinds of things I'm currently working on. Enjoy!\n\n",
+                              "I am a life-long learner and I have spent my personal and professional career exploring a wide range of disciplines. I really like building cool things that make a difference. This website should give you an idea of my experience and the kinds of things I enjoy working on. Enjoy!\n\n",
                               style: getScaledTextStyle(
                                 context,
                                 Theme.of(context).textTheme.displaySmall,
@@ -357,7 +357,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           SizedBox(
                             height: getScreenScale(context) * 24,
                           ),
-                          Column(
+                          Flex(
+                              direction: getScreenWidth(context) > 1000
+                                  ? Axis.horizontal
+                                  : Axis.vertical,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -365,7 +368,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     ClickableTile(
-                                      svgPath: "assets/tech-icon.svg",
+                                      svgPath: "assets/business-icon.svg",
                                       name: "BUSINESS",
                                       onTapCb: selectTile,
                                     ),
@@ -380,13 +383,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     ClickableTile(
-                                      svgPath: "assets/tech-icon.svg",
+                                      svgPath: "assets/science-icon.svg",
                                       name: "SCIENCE",
                                       onTapCb: selectTile,
                                     ),
                                     ClickableTile(
-                                      svgPath: "assets/tech-icon.svg",
-                                      name: "MISC.",
+                                      svgPath: "assets/life-icon.svg",
+                                      name: "LIFE",
                                       onTapCb: selectTile,
                                     ),
                                   ],
