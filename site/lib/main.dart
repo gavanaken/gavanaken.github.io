@@ -97,7 +97,13 @@ class _MyHomePageState extends State<MyHomePage> {
         final RenderBox renderBox =
             _targetKey.currentContext!.findRenderObject() as RenderBox;
         final position = renderBox.localToGlobal(Offset.zero);
-        final offset = position.dy - (MediaQuery.of(context).size.height / 2);
+        double offset = position.dy -
+            (MediaQuery.of(context).size.height / 2 -
+                renderBox.size.height / 2) +
+            100; // 100 here is just to give a little breathing room, adjust as card content gets filled in.
+
+        // Ensure offset is within the scrollable range
+        offset = offset.clamp(0, _scrollController.position.maxScrollExtent);
 
         _scrollController.animateTo(
           offset,
@@ -117,7 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       setState(() {
         selectedTile = tileName;
-        _scrollToTarget();
+        Future.delayed(const Duration(milliseconds: 300), () {
+          // Animation should be done, trigger your scroll here
+          _scrollToTarget();
+        });
       });
     }
   }
@@ -289,10 +298,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                                right: getScreenWidth(context) / 8,
-                                left: getScreenWidth(context) / 8),
+                              right:
+                                  getMarginAsScaledPercent(context, 1000, 0.1),
+                              left:
+                                  getMarginAsScaledPercent(context, 1000, 0.1),
+                            ),
                             child: Text(
-                              "I am a life-long learner and I have spent my personal and professional career exploring a wide range of disciplines. I really like building cool things that make a difference. This website should give you an idea of my experience and the kinds of things I enjoy working on. Enjoy!\n\n",
+                              "I am a life-long learner and I have spent my personal and professional career exploring a wide range of disciplines. I really like building cool things that make a difference.\n\nThis website should give you an idea of my experience and the kinds of things I like working on. Enjoy!\n\n",
                               style: getScaledTextStyle(
                                 context,
                                 Theme.of(context).textTheme.displaySmall,
@@ -400,7 +412,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             firstChild: Container(),
                             secondChild: selectedTile != null
                                 ? SizedBox(
-                                    width: getScreenWidth(context) / 2,
+                                    width: getScreenWidth(context) -
+                                        2 *
+                                            getMarginAsScaledPercent(
+                                                context, 1000, 0.2),
                                     child: Card(
                                         key: _targetKey,
                                         color: BackgroundColors.white,

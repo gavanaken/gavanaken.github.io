@@ -5,6 +5,12 @@ double getScreenWidth(context) {
   return screenWidth;
 }
 
+double getMarginAsScaledPercent(context, double maxSize, double percentMargin) {
+  return getScreenWidth(context) >= maxSize
+      ? getScreenWidth(context) * percentMargin
+      : getScreenWidth(context) / maxSize * percentMargin;
+}
+
 double getScreenScale(BuildContext context) {
   final screenWidth = getScreenWidth(context);
 
