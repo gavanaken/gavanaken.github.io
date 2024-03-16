@@ -148,8 +148,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding:
-                        const EdgeInsets.fromLTRB(100.0, 24.0, 100.0, 48.0),
+                    padding: EdgeInsets.fromLTRB(
+                      getScreenScale(context) * 100.0,
+                      getScreenScale(context) * 24.0,
+                      getScreenScale(context) * 100.0,
+                      getScreenScale(context) * 48.0,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
