@@ -71,6 +71,23 @@ flutter:
     - assets/life-icon.svg
     - assets/gva-logo.svg
 
+    - assets/Python.png
+    - assets/Cplusplus.png
+    - assets/Csharp.png
+    - assets/Django.png
+    - assets/Docker.png
+    - assets/Flutter.png
+    - assets/Git.png
+    - assets/Golang.png
+    - assets/JavaScript.png
+    - assets/Kafka.png
+    - assets/Kotlin.png
+    - assets/NXP.png
+    - assets/Postgres.png
+    - assets/Qt.png
+    - assets/ST.png
+    - assets/VSCode.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
