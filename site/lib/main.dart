@@ -98,19 +98,21 @@ class _MyHomePageState extends State<MyHomePage> {
         final RenderBox renderBox =
             _targetKey.currentContext!.findRenderObject() as RenderBox;
         final position = renderBox.localToGlobal(Offset.zero);
-        double offset = position.dy -
-            (MediaQuery.of(context).size.height / 2 -
-                renderBox.size.height / 2) +
-            100; // 100 here is just to give a little breathing room, adjust as card content gets filled in.
+        double offset = position.dy +
+            (_scrollController.position.viewportDimension / 2) +
+            (renderBox.size.height / 2);
 
-        // Ensure offset is within the scrollable range
         offset = offset.clamp(0, _scrollController.position.maxScrollExtent);
 
-        _scrollController.animateTo(
-          offset,
-          duration: const Duration(seconds: 1),
-          curve: Curves.easeInOut,
-        );
+        if ((offset < _scrollController.position.extentAfter) ||
+            (offset > _scrollController.position.extentBefore)) {
+          // Widget is off the screen so go ahead and animate:
+          _scrollController.animateTo(
+            offset,
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeInOut,
+          );
+        }
       }
     });
   }
@@ -125,7 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         selectedTile = tileName;
         Future.delayed(const Duration(milliseconds: 300), () {
-          // Animation should be done, trigger your scroll here
           _scrollToTarget();
         });
       });
