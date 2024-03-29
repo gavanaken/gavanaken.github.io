@@ -223,8 +223,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SvgPicture.asset(
                     "assets/about-me-avatar.svg",
-                    height: 250 * getScreenScale(context),
-                    width: 250 * getScreenScale(context),
+                    height: 280 * getScreenScale(context),
+                    width: 280 * getScreenScale(context),
                   ),
                   SizedBox(
                     height: getScreenScale(context) * 24,
