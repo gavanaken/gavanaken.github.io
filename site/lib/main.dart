@@ -297,7 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: getScaledTextStyle(
                               context,
                               Theme.of(context).textTheme.displayMedium,
-                            )?.copyWith(
+                            ).copyWith(
                               color: TextColors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -314,7 +314,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               style: getScaledTextStyle(
                                 context,
                                 Theme.of(context).textTheme.displaySmall,
-                              )?.copyWith(
+                              ).copyWith(
                                 color: TextColors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -327,7 +327,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               style: getScaledTextStyle(
                                 context,
                                 Theme.of(context).textTheme.titleMedium,
-                              )?.copyWith(
+                              ).copyWith(
                                 color: TextColors.white,
                               ),
                             ),
@@ -356,7 +356,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: getScaledTextStyle(
                               context,
                               Theme.of(context).textTheme.bodySmall,
-                            )?.copyWith(
+                            ).copyWith(
                               color: TextColors.white,
                             ),
                             textAlign: TextAlign.center,
@@ -366,7 +366,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: getScaledTextStyle(
                               context,
                               Theme.of(context).textTheme.bodySmall,
-                            )?.copyWith(
+                            ).copyWith(
                               color: TextColors.white,
                               fontStyle: FontStyle.italic,
                             ),
