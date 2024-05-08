@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'colors.dart';
 import 'screen_helpers.dart';
 

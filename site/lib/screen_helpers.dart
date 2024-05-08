@@ -24,7 +24,7 @@ double getScreenScale(BuildContext context) {
   return 1.0;
 }
 
-TextStyle? getScaledTextStyle(BuildContext context, TextStyle? textStyle) {
+TextStyle getScaledTextStyle(BuildContext context, TextStyle? textStyle) {
   // Define your scaling logic based on the screen width
   double fontSize = textStyle!.fontSize ?? 14.0;
   double adjustedFontSize = fontSize * getScreenScale(context);
